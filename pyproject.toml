@@ -4,4 +4,9 @@ version = "0.1.0"
 description = "Step-by-step creation of GPT-2 and similar LLMs from scratch."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "notebook>=7.4.5",
+    "numpy>=2.3.3",
+    "torch>=2.8.0",
+    "torchvision>=0.23.0",
+]
