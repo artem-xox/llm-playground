@@ -7,10 +7,10 @@ import torch
 class NanoConfig:
     # training
     batch_size: int = 64
-    max_iters: int = 500
-    eval_interval: int = 50
-    eval_iters: int = 20
-    learning_rate: float = 3e-4
+    max_iters: int = 50
+    eval_interval: int = 5
+    eval_iters: int = 2
+    learning_rate: float = 1e-2
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
 
     # model

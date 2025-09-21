@@ -1,3 +1,6 @@
+import os
+from dataclasses import asdict
+
 import torch
 
 from src.models.nano.config import NanoConfig
@@ -80,10 +83,19 @@ def main(config: NanoConfig):
         loss.backward()
         optimizer.step()
 
-    # generate from the model
-    context = torch.zeros((1, 1), dtype=torch.long, device=config.device)
-    print(decode(m.generate(context, max_new_tokens=500)[0].tolist()))
-    # open('more.txt', 'w').write(decode(m.generate(context, max_new_tokens=10000)[0].tolist()))
+    # save checkpoint for inference
+    ckpt_dir = "models/nano"
+    os.makedirs(ckpt_dir, exist_ok=True)
+    ckpt_path = os.path.join(ckpt_dir, "model.pt")
+    cpu_state_dict = {k: v.detach().cpu() for k, v in model.state_dict().items()}
+    checkpoint = {
+        "model_state_dict": cpu_state_dict,
+        "config": asdict(config),
+        "vocab": {"stoi": stoi, "itos": itos},
+        "vocab_size": vocab_size,
+    }
+    torch.save(checkpoint, ckpt_path)
+    print(f"Saved checkpoint to {ckpt_path}")
 
 
 if __name__ == "__main__":
